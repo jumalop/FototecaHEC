@@ -1,0 +1,4 @@
+
+body { font-family: sans-serif; padding: 20px; }
+input, textarea { margin: 5px 0; width: 100%; max-width: 400px; }
+img { margin: 5px; border: 1px solid #ccc; }
