@@ -1,10 +1,9 @@
+# Fototeca Hematología HEC OSEP
 
-Versión pública - Fototeca Médula Ósea
+## Instrucciones
 
-1. Descomprimir ZIP.
-2. Subir carpeta a GitHub Pages, Netlify, Vercel, etc.
-3. Abre directamente sin contraseña.
-4. Guarda casos localmente en el navegador y exporta PDF.
-5. Funciona offline como App (PWA).
-
-Creado por Dr. Juan Manuel López. Médico Hematólogo. Mendoza, Argentina.
+1. Subí estos archivos a un repositorio de GitHub.
+2. Activá GitHub Pages en Settings > Pages > Source = main.
+3. Accedé a la app desde https://usuario.github.io/fototeca-hec-osep
+4. Funciona offline y se puede instalar como app PWA.
+5. Permite agregar casos clínicos con imagen y resumen, con opción de exportar a PDF y Drive.
