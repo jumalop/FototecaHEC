@@ -1,51 +1,71 @@
-function showSection(sectionId) {
-  document.querySelectorAll('section').forEach(section => {
-    section.style.display = 'none';
-  });
-  document.getElementById(sectionId).style.display = 'block';
-}
-let db;
-
+// ►►► FUNCIONES DE NAVEGACIÓN ◄◄◄
 function showSection(sectionId) {
     document.querySelectorAll('section').forEach(section => {
-        section.classList.remove('active-section');
+        section.style.display = 'none';
     });
-    document.getElementById(sectionId).classList.add('active-section');
+    document.getElementById(sectionId).style.display = 'block';
 }
 
+// ►►► MANEJO DE LA BASE DE DATOS ◄◄◄
+let db;
+
+function initDB() {
+    return new Promise((resolve, reject) => {
+        const request = indexedDB.open('HematologyDB', 2);
+
+        request.onupgradeneeded = (event) => {
+            db = event.target.result;
+            if (!db.objectStoreNames.contains('cases')) {
+                const store = db.createObjectStore('cases', { keyPath: 'id' });
+                store.createIndex('diagnosis', 'diagnosis', { unique: false });
+            }
+        };
+
+        request.onsuccess = (event) => {
+            db = event.target.result;
+            resolve();
+        };
+
+        request.onerror = (event) => {
+            reject(event.target.error);
+        };
+    });
+}
+
+// ►►► GUARDAR CASO ◄◄◄
 async function saveCase() {
     const imageFile = document.getElementById('image').files[0];
     
     if (!imageFile) {
-        alert('¡Debe subir una imagen del frotis!');
+        alert('⚠️ ¡Debe subir una imagen del frotis!');
         return;
     }
 
-    const caseData = {
-        patientName: document.getElementById('patientName').value.trim(),
-        age: parseInt(document.getElementById('age').value),
-        gender: document.getElementById('gender').value,
-        osepNumber: document.getElementById('osep').value.trim(),
-        diagnosis: document.getElementById('diagnosis').value.trim(),
-        image: await convertImageToBase64(imageFile),
-        date: new Date().toISOString(),
-        caseId: crypto.randomUUID()
-    };
-
     try {
+        const caseData = {
+            id: Date.now(),
+            patientName: document.getElementById('patientName').value,
+            age: parseInt(document.getElementById('age').value),
+            gender: document.getElementById('gender').value,
+            diagnosis: document.getElementById('diagnosis').value,
+            image: await readFileAsBase64(imageFile),
+            date: new Date().toISOString()
+        };
+
         const transaction = db.transaction('cases', 'readwrite');
         const store = transaction.objectStore('cases');
-        await store.add(caseData);
-        
-        alert('¡Caso guardado correctamente!');
+        store.add(caseData);
+
+        alert('✅ Caso guardado exitosamente!');
         updateGallery();
+
     } catch (error) {
-        console.error('Error al guardar:', error);
-        alert('Error al guardar el caso');
+        console.error('Error:', error);
+        alert('❌ Error al guardar el caso');
     }
 }
 
-function convertImageToBase64(file) {
+function readFileAsBase64(file) {
     return new Promise((resolve) => {
         const reader = new FileReader();
         reader.onload = () => resolve(reader.result);
@@ -53,49 +73,39 @@ function convertImageToBase64(file) {
     });
 }
 
+// ►►► ACTUALIZAR GALERÍA ◄◄◄
 async function updateGallery() {
     const transaction = db.transaction('cases', 'readonly');
     const store = transaction.objectStore('cases');
     const request = store.getAll();
 
     request.onsuccess = () => {
-        const cases = request.result;
         const grid = document.getElementById('casesGrid');
         grid.innerHTML = '';
 
-        cases.forEach(caso => {
-            const card = document.createElement('div');
-            card.className = 'case-card';
-            card.innerHTML = `
-                <h3>${caso.patientName}</h3>
-                <p><strong>Edad:</strong> ${caso.age} | <strong>Género:</strong> ${caso.gender}</p>
-                <p><strong>Diagnóstico:</strong> ${caso.diagnosis}</p>
-                <img src="${caso.image}" alt="Frotis hematológico">
-                <p><small>ID: ${caso.caseId}</small></p>
+        request.result.forEach(caso => {
+            grid.innerHTML += `
+                <div class="case-card">
+                    <h3>${caso.patientName}</h3>
+                    <p>Edad: ${caso.age} | ${caso.gender}</p>
+                    <p>Diagnóstico: ${caso.diagnosis}</p>
+                    <img src="${caso.image}" alt="Frotis">
+                </div>
             `;
-            grid.appendChild(card);
         });
     };
 }
 
-// Inicialización
-window.addEventListener('load', () => {
-    const request = indexedDB.open('HematologyDB', 1);
-
-    request.onupgradeneeded = (event) => {
-        db = event.target.result;
-        const store = db.createObjectStore('cases', {
-            keyPath: 'caseId'
-        });
-        
-        store.createIndex('diagnosis', 'diagnosis');
-        store.createIndex('date', 'date');
-    };
-
-    request.onsuccess = (event) => {
-        db = event.target.result;
-        updateGallery();
-    };
-
+// ►►► INICIALIZACIÓN ◄◄◄
+window.addEventListener('load', async () => {
+    await initDB();
+    updateGallery();
     showSection('new-case');
+    
+    // Registrar Service Worker
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('sw.js')
+            .then(() => console.log('SW registrado'))
+            .catch(console.error);
+    }
 });
