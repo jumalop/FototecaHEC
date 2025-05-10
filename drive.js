@@ -39,8 +39,8 @@ const backupToDrive = async (caseData) => {
         };
 
         const formData = new FormData();
-        formData.append('metadata', new Blob([JSON.stringify(metadata)], { type: 'application/json' });
-        formData.append('file', file);
+        formData.append('metadata', new Blob([JSON.stringify(metadata)], { type: 'application/json' }));
+        formData.append('file', file); // CORREGIDO: Se cerró el paréntesis faltante
 
         fetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart', {
             method: 'POST',
