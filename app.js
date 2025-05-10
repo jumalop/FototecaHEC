@@ -6,9 +6,6 @@ function showSection(sectionId) {
     document.getElementById(sectionId).style.display = 'block';
 }
 
-// ►►► MANEJO DE LA BASE DE DATOS ◄◄◄
-let db;
-
 function initDB() {
     return new Promise((resolve, reject) => {
         const request = indexedDB.open('HematologyDB', 2);
