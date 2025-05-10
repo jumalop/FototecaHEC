@@ -1,26 +1,38 @@
 let db;
 
 const initDB = () => {
-    const request = indexedDB.open('HematologyDB', 1);
+    return new Promise((resolve, reject) => {
+        const request = indexedDB.open('HematologyDB', 1);
 
-    request.onupgradeneeded = (event) => {
-        db = event.target.result;
-        const store = db.createObjectStore('cases', {
-            keyPath: 'id',
-            autoIncrement: true
-        });
+        request.onupgradeneeded = (event) => {
+            db = event.target.result;
+            const store = db.createObjectStore('cases', {
+                keyPath: 'id',
+                autoIncrement: true
+            });
 
-        store.createIndex('diagnosis', 'diagnosis', { unique: false });
-        store.createIndex('date', 'date', { unique: false });
-    };
+            store.createIndex('diagnosis', 'diagnosis', { unique: false });
+            store.createIndex('date', 'date', { unique: false });
+        };
 
-    request.onsuccess = (event) => {
-        db = event.target.result;
-    };
+        request.onsuccess = (event) => {
+            db = event.target.result;
+            resolve();
+        };
+
+        request.onerror = (event) => {
+            reject(event.target.error);
+        };
+    });
 };
 
-const saveCase = async (caseData) => {
-    return new Promise((resolve) => {
+const saveCaseToDB = async (caseData) => {
+    return new Promise((resolve, reject) => {
+        if (!db) {
+            reject('La base de datos no está inicializada.');
+            return;
+        }
+
         const transaction = db.transaction('cases', 'readwrite');
         const store = transaction.objectStore('cases');
         
@@ -30,19 +42,28 @@ const saveCase = async (caseData) => {
         const request = store.add(caseData);
         
         request.onsuccess = () => {
-            backupToDrive(caseData); // Llamada al backup
             resolve();
+        };
+
+        request.onerror = (event) => {
+            reject(event.target.error);
         };
     });
 };
 
-const loadCases = () => {
-    return new Promise((resolve) => {
+const loadCasesFromDB = () => {
+    return new Promise((resolve, reject) => {
+        if (!db) {
+            reject('La base de datos no está inicializada.');
+            return;
+        }
+
         const transaction = db.transaction('cases', 'readonly');
         const store = transaction.objectStore('cases');
         const request = store.getAll();
 
         request.onsuccess = () => resolve(request.result);
+        request.onerror = (event) => reject(event.target.error);
     });
 };
 
