@@ -5,9 +5,43 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fototeca Hematológica</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="manifest" href="manifest.json">
 </head>
 <body>
-    <h1>Bienvenido a la Fototeca Médica</h1>
+    <nav>
+        <button onclick="showSection('new-case')">Nuevo Caso</button>
+        <button onclick="showSection('gallery')">Galería</button>
+        <button onclick="showSection('about')">Sobre el Proyecto</button>
+    </nav>
+
+    <section id="new-case" class="active">
+        <h2>📄 Nuevo Caso Clínico</h2>
+        <form id="caseForm">
+            <label>Nombre: <input type="text" id="patientName" required></label>
+            <label>Edad: <input type="number" id="age" min="0" required></label>
+            <label>Género:
+                <select id="gender" required>
+                    <option value="F">Femenino</option>
+                    <option value="M">Masculino</option>
+                    <option value="Otro">Otro</option>
+                </select>
+            </label>
+            <label>Diagnóstico: <input type="text" id="diagnosis" required></label>
+            <label>Imagen: <input type="file" id="image" accept="image/*"></label>
+            <button type="button" onclick="saveCase()">Guardar</button>
+        </form>
+    </section>
+
+    <section id="gallery">
+        <h2>🖼️ Casos Guardados</h2>
+        <div id="casesGrid"></div>
+    </section>
+
+    <section id="about">
+        <h2>⚕️ Sobre el Proyecto</h2>
+        <p>Creado por Dr. Juan Manuel López<br>Médico Hematólogo - Mendoza, Argentina</p>
+    </section>
+
     <script src="app.js"></script>
 </body>
 </html>
