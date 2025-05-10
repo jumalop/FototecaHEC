@@ -1,4 +1,3 @@
-// ►►► FUNCIONES DE NAVEGACIÓN ◄◄◄
 function showSection(sectionId) {
     document.querySelectorAll('section').forEach(section => {
         section.style.display = 'none';
@@ -17,18 +16,15 @@ async function saveCase() {
 
     try {
         const caseData = {
-            id: Date.now(),
             patientName: document.getElementById('patientName').value,
             age: parseInt(document.getElementById('age').value),
             gender: document.getElementById('gender').value,
             diagnosis: document.getElementById('diagnosis').value,
-            image: await readFileAsBase64(imageFile),
-            date: new Date().toISOString()
+            image: await readFileAsBase64(imageFile)
         };
 
-        const transaction = db.transaction('cases', 'readwrite');
-        const store = transaction.objectStore('cases');
-        store.add(caseData);
+        // Llama a la función saveCase definida en db.js
+        await saveCaseToDB(caseData);
 
         alert('✅ Caso guardado exitosamente!');
         updateGallery();
@@ -49,25 +45,21 @@ function readFileAsBase64(file) {
 
 // ►►► ACTUALIZAR GALERÍA ◄◄◄
 async function updateGallery() {
-    const transaction = db.transaction('cases', 'readonly');
-    const store = transaction.objectStore('cases');
-    const request = store.getAll();
+    const cases = await loadCasesFromDB();
 
-    request.onsuccess = () => {
-        const grid = document.getElementById('casesGrid');
-        grid.innerHTML = '';
+    const grid = document.getElementById('casesGrid');
+    grid.innerHTML = '';
 
-        request.result.forEach(caso => {
-            grid.innerHTML += `
-                <div class="case-card">
-                    <h3>${caso.patientName}</h3>
-                    <p>Edad: ${caso.age} | ${caso.gender}</p>
-                    <p>Diagnóstico: ${caso.diagnosis}</p>
-                    <img src="${caso.image}" alt="Frotis">
-                </div>
-            `;
-        });
-    };
+    cases.forEach(caso => {
+        grid.innerHTML += `
+            <div class="case-card">
+                <h3>${caso.patientName}</h3>
+                <p>Edad: ${caso.age} | ${caso.gender}</p>
+                <p>Diagnóstico: ${caso.diagnosis}</p>
+                <img src="${caso.image}" alt="Frotis">
+            </div>
+        `;
+    });
 }
 
 // ►►► INICIALIZACIÓN ◄◄◄
