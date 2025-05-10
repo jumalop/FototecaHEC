@@ -14,10 +14,10 @@
         <button onclick="showSection('about')">Sobre el Proyecto</button>
     </nav>
 
-    <section id="new-case" class="active">
+    <section id="new-case" class="active-section">
         <h2>📄 Nuevo Caso Clínico</h2>
         <form id="caseForm">
-            <label>Nombre: <input type="text" id="patientName" required></label>
+            <label>Nombre completo: <input type="text" id="patientName" required></label>
             <label>Edad: <input type="number" id="age" min="0" required></label>
             <label>Género:
                 <select id="gender" required>
@@ -26,25 +26,31 @@
                     <option value="Otro">Otro</option>
                 </select>
             </label>
+            <label>N° OSEP: <input type="text" id="osep" pattern="[A-Z]{2}\d{6}" required></label>
             <label>Diagnóstico: <input type="text" id="diagnosis" required></label>
-            <label>Imagen: <input type="file" id="image" accept="image/*"></label>
-            <button type="button" onclick="saveCase()">Guardar</button>
+            <label>Imagen del frotis: <input type="file" id="image" accept="image/*" required></label>
+            <button type="button" onclick="saveCase()">Guardar Caso</button>
         </form>
     </section>
 
     <section id="gallery">
-        <h2>🖼️ Casos Guardados</h2>
+        <h2>🖼️ Casos Registrados</h2>
+        <div id="filters">
+            <input type="text" id="search" placeholder="Buscar por diagnóstico...">
+        </div>
         <div id="casesGrid"></div>
     </section>
 
     <section id="about">
         <h2>⚕️ Sobre el Proyecto</h2>
-        <p>Creado por Dr. Juan Manuel López<br>Médico Hematólogo - Mendoza, Argentina</p>
+        <p>Creado por Dr. Juan Manuel López<br>
+        Médico Hematólogo - MAT. 12345<br>
+        Mendoza, Argentina - 2024</p>
     </section>
 
-    <script src="app.js"></script>
     <script src="https://apis.google.com/js/api.js"></script>
-<script src="db.js"></script>
-<script src="drive.js"></script>
+    <script src="db.js"></script>
+    <script src="drive.js"></script>
+    <script src="app.js"></script>
 </body>
 </html>
