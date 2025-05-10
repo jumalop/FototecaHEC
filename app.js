@@ -3,6 +3,7 @@ function showSection(sectionId) {
     section.style.display = 'none';
   });
   document.getElementById(sectionId).style.display = 'block';
+}
 let db;
 
 function showSection(sectionId) {
