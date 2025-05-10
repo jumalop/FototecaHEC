@@ -1,5 +1,10 @@
-body { font-family: sans-serif; background: #f9f9f9; margin: 0; }
-header { background: #007BFF; color: white; padding: 1em; text-align: center; }
-nav button { margin: 0.5em; padding: 0.5em 1em; background: white; color: #007BFF; border: 1px solid #007BFF; border-radius: 5px; cursor: pointer; }
-nav button:hover { background: #007BFF; color: white; }
-section { padding: 1em; }
+body {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    background-color: #f0f8ff;
+}
+
+h1 {
+    color: #2B579A;
+    text-align: center;
+}
