@@ -6,29 +6,6 @@ function showSection(sectionId) {
     document.getElementById(sectionId).style.display = 'block';
 }
 
-function initDB() {
-    return new Promise((resolve, reject) => {
-        const request = indexedDB.open('HematologyDB', 2);
-
-        request.onupgradeneeded = (event) => {
-            db = event.target.result;
-            if (!db.objectStoreNames.contains('cases')) {
-                const store = db.createObjectStore('cases', { keyPath: 'id' });
-                store.createIndex('diagnosis', 'diagnosis', { unique: false });
-            }
-        };
-
-        request.onsuccess = (event) => {
-            db = event.target.result;
-            resolve();
-        };
-
-        request.onerror = (event) => {
-            reject(event.target.error);
-        };
-    });
-}
-
 // ►►► GUARDAR CASO ◄◄◄
 async function saveCase() {
     const imageFile = document.getElementById('image').files[0];
