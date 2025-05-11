@@ -17,6 +17,7 @@ nav {
     margin-bottom: 2rem;
     display: flex;
     gap: 1rem;
+    flex-wrap: wrap; /* Permite que los botones se ajusten en pantallas pequeñas */
 }
 
 nav button {
@@ -79,6 +80,7 @@ section {
     border-radius: 4px;
     margin-top: 1rem;
 }
+
 /* Splash Screen */
 #splashScreen {
     position: fixed;
@@ -117,6 +119,8 @@ section {
     to {
         opacity: 0;
     }
+}
+
 form label {
     display: block;
     margin-bottom: 10px;
@@ -134,4 +138,34 @@ form input, form select, form textarea {
 form textarea {
     resize: vertical; /* Permite que el usuario ajuste la altura */
 }
+
+/* Responsividad: Ajustes para móviles */
+@media (max-width: 768px) {
+    nav {
+        flex-direction: column; /* Los botones se apilan verticalmente */
+        gap: 5px;
+    }
+
+    #caseForm {
+        grid-template-columns: 1fr; /* Un campo por fila */
+    }
+
+    #casesGrid {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Ajusta la cuadrícula */
+    }
+}
+
+@media (max-width: 480px) {
+    nav button {
+        font-size: 14px;
+        padding: 8px;
+    }
+
+    h2 {
+        font-size: 18px;
+    }
+
+    #about p {
+        font-size: 14px;
+    }
 }
