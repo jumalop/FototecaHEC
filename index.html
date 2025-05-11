@@ -36,6 +36,26 @@
                 </label>
                 <label>N° OSEP: <input type="text" id="osep" pattern="[A-Z]{2}\d{6}" required></label>
                 <label>Diagnóstico: <input type="text" id="diagnosis" required></label>
+
+                <!-- Nuevo campo para subir informe del frotis -->
+                <label>Subir Informe del Frotis: 
+                    <input type="file" id="reportUpload" accept=".pdf,.doc,.docx" required>
+                </label>
+
+                <!-- Nuevo campo para resumen de historia clínica -->
+                <label>Resumen de Historia Clínica: 
+                    <textarea id="clinicalHistory" rows="4" placeholder="Escriba un resumen de la historia clínica..." required></textarea>
+                </label>
+
+                <!-- Nuevo menú desplegable para tipo de frotis -->
+                <label>Tipo de Frotis:
+                    <select id="frotisType" required>
+                        <option value="medulo">Médulo</option>
+                        <option value="ganglio">Ganglio</option>
+                        <option value="sangre">Sangre Periférica</option>
+                    </select>
+                </label>
+
                 <label>Imagen del frotis: <input type="file" id="image" accept="image/*" required></label>
                 <button type="button" onclick="saveCase()">Guardar Caso</button>
             </form>
@@ -52,8 +72,8 @@
         <section id="about">
             <h2>⚕️ Sobre el Proyecto</h2>
             <p>Creado por Dr. Juan Manuel López<br>
-            Médico Hematólogo - MAT. 12345<br>
-            Mendoza, Argentina - 2024</p>
+            Médico Hematólogo - MAT. 10529<br>
+            Mendoza, Argentina - 2025</p>
         </section>
     </div>
 
