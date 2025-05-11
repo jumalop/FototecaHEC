@@ -8,49 +8,59 @@
     <link rel="manifest" href="manifest.json">
 </head>
 <body>
-    <nav>
-        <button onclick="showSection('new-case')">Nuevo Caso</button>
-        <button onclick="showSection('gallery')">Casos Guardados</button>
-        <button onclick="showSection('about')">Sobre el Proyecto</button>
-    </nav>
+    <!-- Splash Screen -->
+    <div id="splashScreen">
+        <h1>Bienvenido a Fototeca HEC</h1>
+        <p>Cargando...</p>
+    </div>
 
-    <section id="new-case" class="active-section">
-        <h2>📄 Nuevo Caso Clínico</h2>
-        <form id="caseForm">
-            <label>Nombre completo: <input type="text" id="patientName" required></label>
-            <label>Edad: <input type="number" id="age" min="0" required></label>
-            <label>Género:
-                <select id="gender" required>
-                    <option value="F">Femenino</option>
-                    <option value="M">Masculino</option>
-                    <option value="Otro">Otro</option>
-                </select>
-            </label>
-            <label>N° OSEP: <input type="text" id="osep" pattern="[A-Z]{2}\d{6}" required></label>
-            <label>Diagnóstico: <input type="text" id="diagnosis" required></label>
-            <label>Imagen del frotis: <input type="file" id="image" accept="image/*" required></label>
-            <button type="button" onclick="saveCase()">Guardar Caso</button>
-        </form>
-    </section>
+    <!-- Contenido Principal -->
+    <div id="mainContent" style="display: none;">
+        <nav>
+            <button onclick="showSection('new-case')">Nuevo Caso</button>
+            <button onclick="showSection('gallery')">Casos Guardados</button>
+            <button onclick="showSection('about')">Sobre el Proyecto</button>
+        </nav>
+        
+        <section id="new-case" class="active-section">
+            <h2>📄 Nuevo Caso Clínico</h2>
+            <form id="caseForm">
+                <label>Nombre completo: <input type="text" id="patientName" required></label>
+                <label>Edad: <input type="number" id="age" min="0" required></label>
+                <label>Género:
+                    <select id="gender" required>
+                        <option value="F">Femenino</option>
+                        <option value="M">Masculino</option>
+                        <option value="Otro">Otro</option>
+                    </select>
+                </label>
+                <label>N° OSEP: <input type="text" id="osep" pattern="[A-Z]{2}\d{6}" required></label>
+                <label>Diagnóstico: <input type="text" id="diagnosis" required></label>
+                <label>Imagen del frotis: <input type="file" id="image" accept="image/*" required></label>
+                <button type="button" onclick="saveCase()">Guardar Caso</button>
+            </form>
+        </section>
 
-    <section id="gallery">
-        <h2>🖼️ Casos Registrados</h2>
-        <div id="filters">
-            <input type="text" id="search" placeholder="Buscar por diagnóstico...">
-        </div>
-        <div id="casesGrid"></div>
-    </section>
+        <section id="gallery">
+            <h2>🖼️ Casos Registrados</h2>
+            <div id="filters">
+                <input type="text" id="search" placeholder="Buscar por diagnóstico...">
+            </div>
+            <div id="casesGrid"></div>
+        </section>
 
-    <section id="about">
-        <h2>⚕️ Sobre el Proyecto</h2>
-        <p>Creado por Dr. Juan Manuel López<br>
-        Médico Hematólogo - MAT. 12345<br>
-        Mendoza, Argentina - 2024</p>
-    </section>
+        <section id="about">
+            <h2>⚕️ Sobre el Proyecto</h2>
+            <p>Creado por Dr. Juan Manuel López<br>
+            Médico Hematólogo - MAT. 12345<br>
+            Mendoza, Argentina - 2024</p>
+        </section>
+    </div>
 
     <script src="https://apis.google.com/js/api.js"></script>
     <script src="db.js"></script>
     <script src="drive.js"></script>
     <script src="app.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
